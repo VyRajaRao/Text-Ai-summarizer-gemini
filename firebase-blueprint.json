@@ -1,0 +1,136 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Document": {
+      "title": "Document",
+      "description": "Uploaded document metadata and content",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "fileType": { "type": "string" },
+        "readability": {
+          "type": "object",
+          "properties": {
+            "fleschKincaid": { "type": "number" },
+            "gunningFog": { "type": "number" },
+            "smog": { "type": "number" },
+            "gradeLevel": { "type": "string" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "content", "createdAt"]
+    },
+    "Summary": {
+      "title": "Summary",
+      "description": "Generated summaries for a document",
+      "type": "object",
+      "properties": {
+        "docId": { "type": "string" },
+        "userId": { "type": "string" },
+        "length": { "type": "string", "enum": ["short", "medium", "long"] },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["docId", "userId", "length", "text"]
+    },
+    "Paraphrase": {
+      "title": "Paraphrase",
+      "description": "Generated paraphrases for a document",
+      "type": "object",
+      "properties": {
+        "docId": { "type": "string" },
+        "userId": { "type": "string" },
+        "level": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["docId", "userId", "level", "text"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback on generated outputs",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "targetId": { "type": "string" },
+        "targetType": { "type": "string", "enum": ["summary", "paraphrase"] },
+        "rating": { "type": "string", "enum": ["up", "down"] },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "targetId", "targetType", "rating"]
+    },
+    "Embedding": {
+      "title": "Embedding",
+      "description": "Cached text embeddings",
+      "type": "object",
+      "properties": {
+        "textHash": { "type": "string" },
+        "text": { "type": "string" },
+        "vector": { "type": "array", "items": { "type": "number" } },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["textHash", "text", "vector", "createdAt"]
+    },
+    "GeminiKey": {
+      "title": "GeminiKey",
+      "description": "Stored Gemini API keys for rotation",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "label": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive", "error"] },
+        "lastTested": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["key", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/documents/{docId}": {
+      "schema": "Document",
+      "description": "Uploaded documents"
+    },
+    "/summaries/{summaryId}": {
+      "schema": "Summary",
+      "description": "Generated summaries"
+    },
+    "/paraphrases/{paraphraseId}": {
+      "schema": "Paraphrase",
+      "description": "Generated paraphrases"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User feedback"
+    },
+    "/embeddings/{embeddingId}": {
+      "schema": "Embedding",
+      "description": "Cached embeddings"
+    },
+    "/geminiKeys/{keyId}": {
+      "schema": "GeminiKey",
+      "description": "Stored API keys"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Multi-Level AI Summarizer",
+  "description": "An NLP-powered platform for multi-level text summarization, paraphrasing, and readability analysis using Gemini AI.",
+  "requestFramePermissions": []
+}
